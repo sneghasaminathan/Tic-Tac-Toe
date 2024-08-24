@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIC TAC TOE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><center>Tic Tac Toe</center></h1>
+    </header>
+    <div class="game">
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+            <button class="game-button"></button>
+    </div>
+<div class="reset">
+    <button id="reset-button">reset</button>
+</div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll('.game-button');
+    const resetButton = document.getElementById('reset-button');
+    let isOturn = true;
+
+    const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    const checkWinner = () => {
+        for (const combo of winningCombinations) {
+            const [a, b, c] = combo;
+            const buttonsText = Array.from(buttons).map(button => button.innerText);
+            if (buttonsText[a] && buttonsText[a] === buttonsText[b] && buttonsText[a] === buttonsText[c]) {
+                alert(`${buttonsText[a]} wins!`);
+                buttons.forEach(button => button.disabled = true);
+                return;
+            }
+        }
+        if ([...buttons].every(button => button.innerText)) {
+            alert('It\'s a draw!');
+        }
+    };
+
+    const handleClick = (event) => {
+        const button = event.target;
+        if (button.innerText) return;
+
+        button.innerText = isOturn ? 'O' : 'X';
+        button.disabled = true;
+        isOturn = !isOturn;
+        checkWinner();
+    };
+
+    const resetGame = () => {
+        buttons.forEach(button => {
+            button.innerText = '';
+            button.disabled = false;
+        });
+        isOturn = true;
+    };
+
+    buttons.forEach(button => button.addEventListener('click', handleClick));
+    resetButton.addEventListener('click', resetGame);
+});
+
+</script>
+</html>
